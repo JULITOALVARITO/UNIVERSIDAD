@@ -3,123 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reclutamiento de Clan</title>
+    <title>COLOMBIA_CORE 2026 | Coolhunting Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Fondo negro y centrado total */
-        body { 
-            background: #000; 
-            margin: 0; 
-            overflow: hidden; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            font-family: 'Segoe UI', sans-serif; 
+        :root {
+            --neon-purple: #8a2be2;
+            --neon-cyan: #00ced1;
+            --neon-yellow: #f4ff5e;
+            --deep-black: #050505;
         }
-
-        /* Cuadro de la broma */
-        #cuadro-reclutamiento { 
-            background: #fff; 
-            padding: 40px; 
-            border-radius: 20px; 
-            text-align: center; 
-            position: absolute; 
-            width: 350px; 
-            z-index: 10; 
-            transition: all 0.1s ease; 
-            box-shadow: 0 10px 40px rgba(255,255,255,0.2); 
-        }
-
-        /* Contenedor del video (oculto al inicio) */
-        #contenedor-video { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: #000; 
-            z-index: 100; 
-        }
-
-        /* Iframe de Streamable configurado */
-        iframe { 
-            width: 100%; 
-            height: 100%; 
-            border: none; 
-        }
-
-        h2 { color: #333; margin-bottom: 30px; font-size: 24px; }
-
-        .botones { 
-            display: flex; 
-            justify-content: space-around; 
-        }
-
-        button { 
-            padding: 15px 35px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            border-radius: 12px; 
-            border: none; 
-            font-size: 18px; 
-            transition: transform 0.1s; 
-        }
-
-        #btn-si { background: #28a745; color: #fff; }
-        #btn-no { background: #dc3545; color: #fff; }
         
-        button:active { transform: scale(0.9); }
+        body { 
+            background-color: var(--deep-black); 
+            color: #f2f2f2; 
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 206, 209, 0.05) 0%, transparent 20%);
+        }
+
+        h1, h2, h3, .font-urban { font-family: 'Unbounded', sans-serif; }
+
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.04;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            z-index: 100;
+        }
+
+        .neo-card {
+            border: 2px solid #333;
+            background: #0a0a0a;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .neo-card:hover {
+            border-color: var(--neon-cyan);
+            transform: translateY(-5px);
+        }
+
+        .tag-active {
+            background: var(--neon-cyan);
+            color: black;
+            padding: 2px 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            display: inline-block;
+        }
+
+        .stat-bar-container {
+            background: #1a1a1a;
+            height: 12px;
+            border: 1px solid #333;
+            position: relative;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 206, 209, 0.3);
+        }
+
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            background: var(--neon-yellow);
+            color: black;
+            padding: 10px 0;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .glitch-text:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .border-urban {
+            border: 1px solid rgba(255,255,255,0.1);
+        }
     </style>
 </head>
-<body>
+<body class="pb-20">
+    <div class="noise"></div>
 
-    <div id="cuadro-reclutamiento">
-        <h2>¿TE QUIERES UNIR AL CLAN?</h2>
-        <div class="botones">
-            <button id="btn-si">SÍ</button>
-            <button id="btn-no">NO</button>
+    <!-- Banner Superior Deslizante -->
+    <div class="marquee border-b-2 border-black mb-12">
+        <div class="marquee-content italic">
+            COOLHUNTING COLOMBIA 2026 // GEN Z INSIGHTS // NEO-TROPICALISMO // GORPCORE URBANO // ESTÉTICA DE LA RESISTENCIA // BOGOTÁ - MEDELLÍN - CALI // 2026 TRENDS // 
+            COOLHUNTING COLOMBIA 2026 // GEN Z INSIGHTS // NEO-TROPICALISMO // GORPCORE URBANO // ESTÉTICA DE LA RESISTENCIA // BOGOTÁ - MEDELLÍN - CALI // 2026 TRENDS // 
         </div>
     </div>
 
-    <div id="contenedor-video">
+    <!-- Header Principal -->
+    <header class="max-w-7xl mx-auto px-6 mb-20 relative">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="relative">
+                <div class="absolute -z-10 w-24 h-24 bg-cyan-500 rounded-full blur-[60px] opacity-30 top-0 left-0"></div>
+                <span class="text-xs font-black text-cyan-400 tracking-[0.3em] uppercase mb-4 block">Coolhunting Intelligence v2.0</span>
+                <h1 class="text-7xl md:text-9xl font-black tracking-tighter uppercase leading-[0.8] glitch-text">
+                    COLOMBIA<br><span class="text-transparent" style="-webkit-text-stroke: 1.5px #f2f2f2;">CORE</span>
+                </h1>
+            </div>
+            <div class="max-w-xs text-right hidden md:block">
+                <p class="text-[10px] font-mono text-gray-500 leading-tight uppercase">
+                    Status: Activo<br>
+                    Ubicación: Bogotá, CO<br>
+                    Segmento: 18-30 Años<br>
+                    Frecuencia: 2.4GHz / Trend Radar
+                </p>
+            </div>
         </div>
+    </header>
 
-    <script>
-        const cuadro = document.getElementById('cuadro-reclutamiento');
-        const btnNo = document.getElementById('btn-no');
-        const btnSi = document.getElementById('btn-si');
-        const contenedorVideo = document.getElementById('contenedor-video');
+    <!-- Grid Principal -->
+    <main class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Tendencia Principal -->
+        <section class="md:col-span-5 neo-card p-8 group">
+            <div class="flex justify-between items-start mb-12">
+                <div class="tag-active">Top Trend</div>
+                <div class="w-8 h-8 border border-gray-700 flex items-center justify-center text-[10px] group-hover:bg-white group-hover:text-black transition-colors">01</div>
+            </div>
+            <h2 class="text-4xl font-black uppercase mb-6 leading-none italic">Neo<br>Tropicalismo</h2>
+            <p class="text-gray-400 text-sm mb-10 leading-relaxed border-l border-zinc-800 pl-4">
+                No es nostalgia, es orgullo radical. La estética de la casa de la abuela filtrada por una lente de alta tecnología. Crochet 3D, bioplásticos y colores de la tierra saturados.
+            </p>
+            <div class="flex flex-wrap gap-2 font-mono text-[10px]">
+                <span class="bg-zinc-800 px-2 py-1">#HOMECORE</span>
+                <span class="bg-zinc-800 px-2 py-1">#TROPICALTECH</span>
+                <span class="bg-zinc-800 px-2 py-1 text-cyan-400">#MADE_IN_CO</span>
+            </div>
+        </section>
 
-        // Función para que el cuadro escape
-        function mover() {
-            const x = Math.random() * (window.innerWidth - cuadro.offsetWidth - 20);
-            const y = Math.random() * (window.innerHeight - cuadro.offsetHeight - 20);
+        <!-- Gráficos de Datos -->
+        <section class="md:col-span-7 bg-[#111] p-10 border-urban rounded-sm relative">
+            <div class="absolute top-0 right-0 p-4 opacity-10">
+                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="48" stroke="white" stroke-width="0.5" stroke-dasharray="2 2"/>
+                </svg>
+            </div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-zinc-500 mb-10 italic">Data_Pulse / Atracción Visual</h3>
             
-            cuadro.style.left = `${Math.max(10, x)}px`;
-            cuadro.style.top = `${Math.max(10, y)}px`;
-            
-            let nuevoAncho = 300 + Math.floor(Math.random() * 100);
-            cuadro.style.width = nuevoAncho + "px";
-        }
+            <div class="space-y-10">
+                <!-- Stat 1 -->
+                <div>
+                    <div class="flex justify-between mb-3">
+                        <span class="text-[10px] font-black uppercase tracking-widest">Contenido RAW (Baja fidelidad)</span>
+                        <span class="text-xs font-mono font-bold">82%</span>
+                    </div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar-fill bg-cyan-400" style="width: 82%"></div>
+                    </div>
+                </div>
+                <!-- Stat 2 -->
+                <div>
+                    <div class="flex justify-between mb-3 text-purple-400">
+                        <span class="text-[10px] font-black uppercase tracking-widest">Atracción por Marcas de Autor Local</span>
+                        <span class="text-xs font-mono font-bold">74%</span>
+                    </div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar-fill bg-purple-600" style="width: 74%"></div>
+                    </div>
+                </div>
+                <!-- Stat 3 -->
+                <div>
+                    <div class="flex justify-between mb-3 text-yellow-200">
+                        <span class="text-[10px] font-black uppercase tracking-widest">Engagement Video Corto (POV)</span>
+                        <span class="text-xs font-mono font-bold">91%</span>
+                    </div>
+                    <div class="stat-bar-container">
+                        <div class="stat-bar-fill bg-yellow-300" style="width: 91%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        btnNo.addEventListener('mouseover', mover);
-        btnNo.addEventListener('touchstart', mover);
-        btnNo.addEventListener('click', mover);
+        <!-- Canales & Medios -->
+        <section class="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="neo-card p-6 border-l-4 border-l-cyan-400">
+                <h4 class="text-lg font-black uppercase mb-2">TikTok / Reels</h4>
+                <p class="text-xs text-zinc-500">Caos controlado, subtítulos "Brutal Sans" y música de nicho (Champeta/Phonk).</p>
+            </div>
+            <div class="neo-card p-6 border-l-4 border-l-purple-600">
+                <h4 class="text-lg font-black uppercase mb-2">OOH Experience</h4>
+                <p class="text-xs text-zinc-500">Instalaciones físicas táctiles diseñadas para ser registradas en video 9:16.</p>
+            </div>
+            <div class="neo-card p-6 border-l-4 border-l-yellow-400">
+                <h4 class="text-lg font-black uppercase mb-2">WhatsApp Channels</h4>
+                <p class="text-xs text-zinc-500">Círculos cerrados, comunicación directa, lanzamientos exclusivos con alto FOMO.</p>
+            </div>
+            <div class="neo-card p-6 border-l-4 border-l-pink-600">
+                <h4 class="text-lg font-black uppercase mb-2">Web3 / Retro</h4>
+                <p class="text-xs text-zinc-500">Interfaces que imitan Windows 98 o sistemas operativos de estética analógica.</p>
+            </div>
+        </section>
 
-        // Al lograr darle al SÍ
-        btnSi.addEventListener('click', () => {
-            cuadro.style.display = 'none';
-            contenedorVideo.style.display = 'block';
-            
-            // Insertamos el iframe de Streamable con autoplay activado
-            contenedorVideo.innerHTML = `
-                <iframe 
-                    src="https://streamable.com/e/dlfhhy?autoplay=1&nocontrols=1" 
-                    allow="autoplay" 
-                    allowfullscreen>
-                </iframe>`;
-        });
-    </script>
+        <!-- Tendencia 2: Gorpcore -->
+        <section class="md:col-span-4 bg-white text-black p-8 flex flex-col justify-between group">
+            <div>
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-[10px] font-black border-2 border-black px-2 py-1">UNIFORME 2026</span>
+                    <span class="text-2xl">⚡</span>
+                </div>
+                <h2 class="text-3xl font-black uppercase leading-[0.9] italic mb-4">Gorpcore<br>Tropical</h2>
+                <p class="text-xs font-medium leading-relaxed">
+                    Senderismo de montaña fusionado con el "party-ready" de Bogotá. Botas técnicas + accesorios artesanales de lujo.
+                </p>
+            </div>
+            <button class="mt-8 border-2 border-black p-3 text-[10px] font-black hover:bg-black hover:text-white transition-all uppercase">Ver Galería Curada</button>
+        </section>
+
+    </main>
+
+    <!-- Footer / Fuentes -->
+    <footer class="max-w-7xl mx-auto px-6 mt-32">
+        <div class="border-t border-zinc-800 pt-10 flex flex-col md:flex-row justify-between gap-12">
+            <div class="text-[10px] font-mono text-zinc-600 space-y-4">
+                <p class="text-zinc-400 font-bold uppercase tracking-widest">// ARCHIVO DE FUENTES ANALIZADAS:</p>
+                <p>01. INEXMODA 2026: FORO DE TENDENCIAS "MOSAICO" & "HONRADO".</p>
+                <p>02. WGSN 2026: MACROTRENDS "FUTURE DUSK" ADAPTACIÓN LATAM.</p>
+                <p>03. IAB COLOMBIA: CONSUMO DIGITAL EN GEN Z / ZILLENNIALS.</p>
+                <p>04. MOKA LET'S TALK: "ESTÉTICA DE LA RESISTENCIA EN EL SUR GLOBAL".</p>
+            </div>
+            <div class="flex flex-col items-end">
+                <div class="text-6xl font-black text-zinc-800 select-none">2.6_CO</div>
+                <p class="text-[10px] font-mono text-zinc-500 mt-2">© 2026 COOLHUNTING INTEL • ALL RIGHTS RESERVED</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
